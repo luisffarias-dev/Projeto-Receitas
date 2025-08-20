@@ -14,7 +14,7 @@
     <nav class="menu">
         <div class="user-info">
          <img src="assets/icones/usuario.png" alt="Foto do usuário">
-         <span>Nome do Usuário</span>
+         <span id="nome-usuario"></span>
        </div>
       <a href="#carrossel"><i class="fa-solid fa-book"></i> Receitas</a>
       <a href="#adicionar"><i class="fa-solid fa-clipboard-list"></i> Adicionar</a>
@@ -22,60 +22,60 @@
     </nav>
   </header>
     <div class="conteiner">
-    <section class="login"></section>
-    <section class="carrossel">
-        <div class="carrosel-container">
-  <div id="carouselExampleCaptions" class="carousel slide">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></button>
-    </div>
-
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="assets/imagens/morango.jpeg" class="d-block w-100" alt="Bolo de Morango">
-        <div class="carousel-caption d-none d-md-block">
-          <div class="caption-box">
-            <h3>Bolo de Morango</h3>
-            <p>Um bolo macio e doce, coberto com morangos frescos.</p>
-            <small>⏱ 50 minutos</small>
+    <section class="cadastrar">
+      <div class="cadastrar-conteiner">
+         <div class="area-cadastrar">
+            <br><h4>Cadastrar</h4>
+            <label for="nome">Nome</label>
+            <input type="text" id="nomeCadastrar">
+            <label for="email">Email</label>
+            <input type="text" id="emailCadastrar">
+            <label for="senha">Senha</label>
+            <input type="text" id="senhaCadastrar">
+            <label for="confirmar-senha">Confirmar Senha</label>
+            <input type="text" id="senhaConfirmar">
+            <button type="submit" class="btn-salvar" id="btn-cadastrar">
+              Cadastrar
+            </button>
+            <button type="submit">
+              <i class="fa-solid fa-circle-user"></i> Login
+            </button>
           </div>
-        </div>
       </div>
-
-      <div class="carousel-item">
-        <img src="assets/imagens/receita-bolo-brigadeiro.webp" class="d-block w-100" alt="Bolo de Brigadeiro">
-        <div class="carousel-caption d-none d-md-block">
-          <div class="caption-box">
-            <h3>Bolo de Brigadeiro</h3>
-            <p>Delicioso bolo com cobertura de brigadeiro cremoso.</p>
-            <small>⏱ 40 minutos</small>
+    </section>  
+    <section class="login">
+      <div class="login-conteiner">
+         <div class="area-login">
+            <br><h4>Login</h4>
+            <label for="email">Email</label>
+            <input type="text" id="emailLogin">
+            <label for="senha">Senha</label>
+            <input type="text" id="senhaLogin">
+            <button type="submit" class="btn-salvar" id="btn-login">
+              Login
+            </button>
+            <button type="submit">
+              <i class="fa-solid fa-circle-user"></i> Cadastrar 
+            </button>
           </div>
-        </div>
       </div>
-
-      <div class="carousel-item">
-        <img src="assets/imagens/f494abb2c3360b9966f5abe130e2.jpg" class="d-block w-100" alt="Torta de Frutas">
-        <div class="carousel-caption d-none d-md-block">
-          <div class="caption-box">
-            <h3>Torta de Frutas</h3>
-            <p>Torta fresca com creme suave e frutas variadas.</p>
-            <small>⏱ 35 minutos</small>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
-  </div>
-</div>
     </section>
+    <section class="carrossel">
+  <div class="carrosel-container">
+    <div id="carouselExampleCaptions" class="carousel slide">
+      <div class="carousel-indicators" id="carousel-indicators"></div>
+      <div class="carousel-inner" id="carousel-inner"></div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+</section>
+
     <section class="receitas">
         <div class="receitas-conteiner">
             <div class="area-titulo">
@@ -121,7 +121,61 @@
             </div>
         </div>
     </section>
-    <section class="adicionar"></section>
+    <section class="adicionar">
+      <div class="adicionar-conteiner">
+        <h3 class="titulos">Cadastre sua Receita</h3>
+        
+          <div class="dados-receita">
+            <br><h4>Dados da Receita</h4>
+            <label for="titulo">Titulo</label>
+            <input type="text" id="tituloReceita">
+            <label for="descricao">Descrição</label>
+            <input type="text" id="descricao">
+            <label for="tempo-preparo">Tempo de Preparo</label>
+            <input type="text" id="tempo">
+            <label for="add-image">Imagem</label>
+            <div class="upload-box">
+            <i class="fa-solid fa-image"></i>
+            <input type="file" id="add-image">
+            </div>
+            
+          </div>
+         
+            <div class="adicionar-ingredientes">
+              <br><h4>Ingredientes</h4>
+              <div class="novo-ingrediente">
+              <label for="ingrediente">Ingrediente</label>
+              <input type="text" class="NovoIngrediente">
+              <label for="medida">Tipo Medida</label>
+              <input type="text" class="NovoIngrediente">
+              <label for="quantidade">Quantidade</label>
+              <input type="text" class="NovoIngrediente">
+              <hr>
+              </div>
+              <div class="btn-position">
+                <button type="submit" class="btn-plus" id="btn-add-ingrediente">
+                <i class="fa-solid fa-plus"></i> 
+                </button>
+              </div>
+            </div>
+            
+
+          <div class="modo-preparo">
+          <h4>Modo de Preparo</h4>
+          <div class="passos-container">
+          <div class="novo-passo">
+          <label for="passoPreparo">1° Passo</label>
+          <input type="text" class="passoPreparo" placeholder="Digite o passo">
+          </div>
+          </div>
+          <button type="submit" class="btn-plus" id="btn-add-passo">
+          <i class="fa-solid fa-plus"></i>
+          </button>
+          </div>
+          <button type="submit" class="btn-salvar" id="btn-salvarReceita">Salvar</button>
+       
+      </div>
+    </section>
         
     </div>
     
