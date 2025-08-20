@@ -15,7 +15,7 @@ Projeto-Receitas/
 ├── 📄 index.html        # Arquivo principal HTML
 ├── 📜 index.js          # Lógica JavaScript do projeto
 ├── 🎨 styles.css        # Estilos e layout do site
-└── 🗄️ conexao.php       # Script de conexão com o banco de dados
+
 ```
 ---
 ## 🛠️ Tecnologias Utilizadas
@@ -24,4 +24,3 @@ Projeto-Receitas/
 - **HTML** - Criação da estrutura do projeto
 - **JavaScript** - Lógica e regras do projeto
 - **CSS** - Estilização do projeto
-- **PHP** - Conexão e interação com o banco de dados
