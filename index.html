@@ -16,9 +16,9 @@
          <img src="assets/icones/usuario.png" alt="Foto do usuário">
          <span id="nome-usuario"></span>
        </div>
-      <a href="#carrossel"><i class="fa-solid fa-book"></i> Receitas</a>
-      <a href="#adicionar"><i class="fa-solid fa-clipboard-list"></i> Adicionar</a>
-      <a href="#login"><i class="fa-solid fa-user"></i> Login</a>   
+      <a href="#carrossel" class="ativoCarrossel"><i class="fa-solid fa-book"></i> Receitas</a>
+      <a href="#adicionar" class="ativoAdicionar"><i class="fa-solid fa-clipboard-list"></i> Adicionar</a>
+      <a href="#login" class="ativoLogin"><i class="fa-solid fa-user"></i> Login</a>   
     </nav>
   </header>
     <div class="conteiner">
@@ -37,7 +37,7 @@
             <button type="submit" class="btn-salvar" id="btn-cadastrar">
               Cadastrar
             </button>
-            <button type="submit">
+            <button type="submit" class="ativoLogin">
               <i class="fa-solid fa-circle-user"></i> Login
             </button>
           </div>
@@ -54,14 +54,14 @@
             <button type="submit" class="btn-salvar" id="btn-login">
               Login
             </button>
-            <button type="submit">
+            <button type="submit" class="ativoCadastro">
               <i class="fa-solid fa-circle-user"></i> Cadastrar 
             </button>
           </div>
       </div>
     </section>
     <section class="carrossel">
-  <div class="carrosel-container">
+    <div class="carrosel-container">
     <div id="carouselExampleCaptions" class="carousel slide">
       <div class="carousel-indicators" id="carousel-indicators"></div>
       <div class="carousel-inner" id="carousel-inner"></div>
@@ -80,20 +80,20 @@
         <div class="receitas-conteiner">
             <div class="area-titulo">
 
-                <h3 class="titulos"> Morango Do Amor</h3>
+                <h3 class="titulos" id="titulo"> </h3>
                 <div class="foto-receita">
-                    <img src="assets/imagens/morango.jpeg" alt="foto-receita">
+                    <img src="" alt="foto-receita" id="imagem-receita">
                 </div>
                 <div class="icones receita">
-                    <a href="#carrossel"><i class="fa-solid fa-clock"></i> 40Min</a>
-                    <a href="#adicionar"><i class="fa-solid fa-heart"></i> Favoritar</a>
-                    <a href="#login"><i class="fa-solid fa-print"></i> Imprimir</a> 
+                    <a href="#carrossel"><i class="fa-solid fa-clock"></i><span id="tempo-receita"></span> </a>
+                    <a href="#adicionar"><i class="fa-solid fa-heart" id="favoritar-receita"></i> Favoritar</a>
+                    <a href="#login"><i class="fa-solid fa-print" id="imprimir-receita"></i> Imprimir</a> 
                 </div>
             </div>
             <div class="area-ingredientes">
                 <h3 class="titulos">Ingredientes</h3>
                 <div class="ingredientes">
-                    <table>
+                    <table id="ingredientes-receita">
                         <thead>
                             <tr>
 
@@ -105,9 +105,9 @@
                         <tbody>
 
                             <tr>
-                        <td>12</td>        
-                        <td>Unidade</td>        
-                        <td>Morango</td>        
+                        <td></td>        
+                        <td></td>        
+                        <td></td>        
                             </tr>    
                         </tbody>
                     </table>
@@ -190,16 +190,16 @@
           <h3>Links</h3>
           <ul>
             
-            <li><a href="#">Receitas</a></li>
-            <li><a href="#">Adicionar</a></li>
-            <li><a href="#">Login</a></li>
+            <li><a href="#" class="ativoCarrossel">Receitas</a></li>
+            <li><a href="#" class="ativoAdicionar">Adicionar</a></li>
+            <li><a href="#" class="ativoLogin">Login</a></li>
           </ul>
         </div>
     
         <div class="footer-social">
           <h3>Redes Sociais</h3>
-          <a href="#">Github</a> |
-          <a href="#">Linkedin</a> 
+          <a href="https://www.linkedin.com/in/luis-fernando-franca-farias/">Github</a> |
+          <a href="https://github.com/luisffarias-dev/Projeto-Receitas.git">Linkedin</a> 
         </div>
       </div>
     

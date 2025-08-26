@@ -224,6 +224,16 @@ nav a:hover {
   color: #fff;
 }
 
+.btn-ir {
+  font-size: 1rem;
+  margin-bottom: 6px;
+  color: #f1f1f1;
+  background:  rgba(255,255,255,0.2);
+  border: none;
+  border-radius: 10px;
+  text-align: left;
+}
+
 #carouselExampleCaptions {
   max-width: 800px;
   margin: 0 auto;
@@ -287,6 +297,14 @@ nav a:hover {
   color: #ff4d94;
   font-weight: bold;
   transition: all 0.3s;
+}
+
+.icones span {
+  text-decoration: none;
+  color: #ff4d94;
+  font-weight: bold;
+  transition: all 0.3s;
+  padding: 5px;
 }
 
 .icones a:hover {
@@ -560,4 +578,15 @@ nav a:hover {
   display: flex;
   justify-content: center;
   margin-top: auto; /* empurra o botão para o final do container */
+}
+
+section {
+    display: none; /* todas as sections começam escondidas */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+section.ativo {
+    display: block; /* visível quando tiver .ativo */
+    opacity: 1;
 }

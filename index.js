@@ -1,3 +1,4 @@
+//Função inicial para conter algum valor como default
 function preparoTeste() {
   let receitas = JSON.parse(localStorage.getItem("Receitas")) || [];
 
@@ -25,11 +26,10 @@ function preparoTeste() {
     localStorage.setItem("Receitas", JSON.stringify(receitas));
   }
 }
-
-
 window.addEventListener("DOMContentLoaded", preparoTeste);
 
 
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<< Section Cadastro >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 let btnCadastrar = document.getElementById("btn-cadastrar");
 btnCadastrar.addEventListener('click', function(e){
   e.preventDefault();
@@ -47,6 +47,7 @@ function criarCadastro(nome, emailCadastrar, senha){
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
 }
 
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<< Section Login >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 function login(){
   const loginEmail = document.getElementById("emailLogin").value.trim();
   const senha = document.getElementById("senhaLogin").value.trim();
@@ -67,10 +68,17 @@ btnLogin.addEventListener('click', function(e){
   login();
 });
 
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<< Section Adicionar >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 let btnSalvarReceita = document.getElementById("btn-salvarReceita");
 btnSalvarReceita.addEventListener('click', function(e){
   e.preventDefault();
   cadastrarReceita();
+  alert("Receita Cadastrada com sucesso!");
+  mostrarCarrossel();
+  resetarInputsReceita()
+
 });
 
 const containerIngredientes = document.querySelector(".adicionar-ingredientes");
@@ -108,7 +116,7 @@ btnAddPasso.addEventListener("click", function(e){
 
   novoPasso.innerHTML = `
     <label>${totalPassos}° Passo</label>
-    <textarea class="passoPreparo" placeholder="Digite o passo"></textarea>
+   <input type="text" class="passoPreparo" placeholder="Digite o passo">
   `;
 
   containerPassos.appendChild(novoPasso);
@@ -148,7 +156,7 @@ function cadastrarReceita(){
 }
 
 
-
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<< Section Carrossel >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 function atualizarCarrossel() {
   const receitas = JSON.parse(localStorage.getItem("Receitas")) || [];
   const carouselInner = document.querySelector(".carousel-inner");
@@ -179,6 +187,9 @@ function atualizarCarrossel() {
       <h3>${receita.Titulo}</h3>
       <p>${receita.Descricao}</p>
       <small>⏱ ${receita.TempoPreparo}</small>
+      <button class="btn-ir">
+      Ir Para <i class="fa-solid fa-book-open"></i>
+      </button></div>
     `;
 
     caption.appendChild(captionBox);
@@ -198,51 +209,223 @@ function atualizarCarrossel() {
 }
 
 
+// Função que atualiza a seção de detalhes da receita
 function carregarReceita(index) {
   const receitas = JSON.parse(localStorage.getItem("Receitas")) || [];
   const receita = receitas[index];
-  if (!receita) return;
+  if(!receita) return;
 
-  // Atualiza título, imagem e tempo de preparo
   document.getElementById("tituloReceita").innerText = receita.Titulo;
-  document.getElementById("imgReceita").src = receita.Imagem;
+  document.getElementById("imgReceita").src ="assets/"+receita.Imagem;
   document.getElementById("tempoPreparo").innerText = receita.TempoPreparo;
 
-  // Atualiza tabela de ingredientes
   let ingredientesHTML = "";
-  if (receita.Ingredientes && receita.Ingredientes.length > 0) {
-    receita.Ingredientes.forEach(ing => {
-      ingredientesHTML += `<tr>
-        <td>${ing.Quantidade}</td>
-        <td>${ing.Medida}</td>
-        <td>${ing.Ingrediente}</td>
-      </tr>`;
-    });
+  if(receita.Ingredientes) {
+    const ing = receita.Ingredientes;
+    ingredientesHTML += `<tr>
+      <td>${ing.Quantidade}</td>
+      <td>${ing.Medida}</td>
+      <td>${ing.Ingrediente}</td>
+    </tr>`;
   }
   document.getElementById("ingredientesTabela").innerHTML = ingredientesHTML;
 
-  // Atualiza passos
-  const containerPassos = document.querySelector(".passos");
-  containerPassos.innerHTML = ""; // limpa passos antigos
-
-  receita.Passos.forEach((passo, i) => {
-    const divPasso = document.createElement("div");
-    divPasso.classList.add("passo");
-
-    const numero = document.createElement("div");
-    numero.classList.add("numero");
-    numero.textContent = i + 1;
-
-    const texto = document.createElement("p");
-    texto.textContent = passo;
-
-    divPasso.appendChild(numero);
-    divPasso.appendChild(texto);
-    containerPassos.appendChild(divPasso);
+  let passosHTML = "";
+  receita.Passos.forEach((p, i) => {
+    passosHTML += `<div class="passo"><div class="numero">${i+1}</div><p>${p}</p></div>`;
   });
+  document.getElementById("passosReceita").innerHTML = passosHTML;
 }
 
 // Atualiza o carrossel ao carregar a página
 window.addEventListener("DOMContentLoaded", () => {
   atualizarCarrossel();
 });
+
+
+// Delegação de eventos no carrossel para os botões "Ir Para"
+const carouselInner = document.querySelector(".carousel-inner");
+
+carouselInner.addEventListener("click", function(e) {
+    const btn = e.target.closest(".btn-ir"); // garante que o clique seja no botão ou no ícone
+    if (!btn) return; // se não clicou no btn-ir, sai
+
+    e.preventDefault();
+
+    // Descobre qual item do carrossel foi clicado
+    const carouselItem = btn.closest(".carousel-item");
+    const index = Array.from(carouselInner.children).indexOf(carouselItem);
+
+    // Pega a receita correspondente do localStorage
+    const receitas = JSON.parse(localStorage.getItem("Receitas")) || [];
+    const receitaSelecionada = receitas[index];
+    if (!receitaSelecionada) return;
+
+    // Cria o objeto que representa a receita selecionada
+    const receitaObj = {
+        Titulo: receitaSelecionada.Titulo,
+        Descricao: receitaSelecionada.Descricao,
+        TempoPreparo: receitaSelecionada.TempoPreparo,
+        Imagem: receitaSelecionada.Imagem,
+        Ingredientes: receitaSelecionada.Ingredientes || [],
+        Passos: receitaSelecionada.Passos || []
+    };
+
+    exibirReceita(receitaObj);
+    console.log("Receita selecionada:", receitaObj);
+
+});
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<< Section Receitas >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function exibirReceita(receitaObj) {
+    // Título
+    const titulo = document.getElementById("titulo");
+    titulo.innerText = receitaObj.Titulo;
+
+    // Imagem
+    const imagem = document.getElementById("imagem-receita");
+    imagem.src = "assets/"+receitaObj.Imagem;
+    imagem.alt = receitaObj.Titulo;
+
+    // Tempo de preparo
+    const tempo = document.getElementById("tempo-receita");
+    tempo.innerText = receitaObj.TempoPreparo;
+
+    // Ingredientes
+    const ingredientesTabela = document.getElementById("ingredientes-receita").querySelector("tbody");
+    ingredientesTabela.innerHTML = ""; // limpa tabela
+    receitaObj.Ingredientes.forEach(ing => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${ing.Quantidade}</td>
+            <td>${ing.Medida}</td>
+            <td>${ing.Ingrediente}</td>
+        `;
+        ingredientesTabela.appendChild(tr);
+    });
+
+    // Passos de preparo
+    const passosDiv = document.querySelector(".passos");
+    passosDiv.innerHTML = ""; // limpa passos
+    receitaObj.Passos.forEach((passo, i) => {
+        const div = document.createElement("div");
+        div.classList.add("passo");
+        div.innerHTML = `<div class="numero">${i+1}</div><p>${passo}</p>`;
+        passosDiv.appendChild(div);
+    });
+
+    // Torna a section visível
+   mostrarReceitas()
+    // Scroll suave até a receita
+    receitaSection.scrollIntoView({ behavior: "smooth" });
+}
+
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<< Funçoes para esconder tela >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function esconderSections() {
+    document.querySelectorAll("section").forEach(sec => sec.classList.remove("ativo"));
+}
+
+
+function mostrarReceitas() {
+    esconderSections();
+    const sec = document.querySelector(".receitas");
+    if(sec) sec.classList.add("ativo");
+    sec.scrollIntoView({ behavior: "smooth" });
+}
+
+function mostrarAdicionar() {
+    esconderSections();
+    const sec = document.querySelector(".adicionar");
+    if(sec) sec.classList.add("ativo");
+    sec.scrollIntoView({ behavior: "smooth" });
+    
+}
+
+function mostrarLogin() {
+    esconderSections();
+    const sec = document.querySelector(".login");
+    if(sec) sec.classList.add("ativo");
+    sec.scrollIntoView({ behavior: "smooth" });
+}
+function mostrarCadastrar() {
+    esconderSections();
+    const sec = document.querySelector(".cadastrar");
+    if(sec) sec.classList.add("ativo");
+    sec.scrollIntoView({ behavior: "smooth" });
+}
+
+function mostrarCarrossel() {
+    esconderSections();
+    const sec = document.querySelector(".carrossel");
+    if(sec) sec.classList.add("ativo");
+    sec.scrollIntoView({ behavior: "smooth" });
+    
+    
+}
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<< Eventos que chamam as funçoes >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+document.querySelectorAll(".ativoCarrossel").forEach(btn => {
+    btn.addEventListener("click", function(e) {
+        e.preventDefault();
+        mostrarCarrossel(); 
+        window.location.reload();
+    });
+});
+document.querySelectorAll(".ativoAdicionar").forEach(btn => {
+    btn.addEventListener("click", function(e) {
+        e.preventDefault();
+        mostrarAdicionar(); 
+    });
+});
+document.querySelectorAll(".ativoLogin").forEach(btn => {
+    btn.addEventListener("click", function(e) {
+        e.preventDefault();
+        mostrarLogin(); 
+    });
+});
+document.querySelectorAll(".ativoCadastro").forEach(btn => {
+    btn.addEventListener("click", function(e) {
+        e.preventDefault();
+        mostrarCadastrar(); 
+    });
+});
+
+
+
+window.addEventListener("DOMContentLoaded", () => {
+    mostrarCarrossel(); 
+});
+
+
+function resetarInputsReceita() { 
+    document.getElementById("tituloReceita").value = "";
+    document.getElementById("descricao").value = "";
+    document.getElementById("tempo").value = "";
+    document.getElementById("add-image").value = "";
+
+    const containerIngredientes = document.querySelector(".adicionar-ingredientes");
+    const ingredientesExtras = containerIngredientes.querySelectorAll(".novo-ingrediente");
+    ingredientesExtras.forEach((div, index) => {
+        if(index === 0){
+            
+            const inputs = div.querySelectorAll("input");
+            inputs.forEach(input => input.value = "");
+        } else {
+            div.remove();
+        }
+    });
+
+    const containerPassos = document.querySelector(".passos-container");
+    const passosExtras = containerPassos.querySelectorAll(".novo-passo");
+    passosExtras.forEach((div, index) => {
+        if(index === 0){
+           
+            const input = div.querySelector("input");
+            if(input) input.value = "";
+        } else {
+            div.remove();
+        }
+    });
+}
