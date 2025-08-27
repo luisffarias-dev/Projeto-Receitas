@@ -36,9 +36,31 @@ btnCadastrar.addEventListener('click', function(e){
   const nome = document.getElementById("nomeCadastrar").value.trim();
   const emailCadastrar = document.getElementById("emailCadastrar").value.trim();
   const senha = document.getElementById("senhaCadastrar").value.trim();
-  criarCadastro(nome, emailCadastrar, senha);
-  console.log(localStorage.getItem("usuarios"));
-});
+  const senhaConfirmar= document.getElementById("senhaConfirmar").value.trim();
+
+  if (senha !== senhaConfirmar){
+    alert("As senhas não coincidem. Verifique e tente novamente.");
+    document.getElementById("senhaCadastrar").value = "";
+    document.getElementById("senhaConfirmar").value = "";
+  }
+  else{
+
+    if(nome && emailCadastrar && senha){
+      criarCadastro(nome, emailCadastrar, senha);
+      alert("Cadastro realizado com sucesso! Você já pode fazer login.");
+      
+    
+      document.getElementById("nomeCadastrar").value = "";
+      document.getElementById("emailCadastrar").value = "";
+      document.getElementById("senhaCadastrar").value = "";
+      document.getElementById("senhaConfirmar").value = "";
+      mostrarLogin();
+    } else {
+      alert("Por favor, preencha todos os campos antes de cadastrar.");
+    }
+
+    console.log(localStorage.getItem("usuarios"));
+}});
 
 function criarCadastro(nome, emailCadastrar, senha){
   const usuario = { Nome: nome, Email: emailCadastrar, Senha: senha };
@@ -57,8 +79,12 @@ function login(){
   if(usuarioEncontrado){
     alert("Login realizado com sucesso! Bem-vindo, " + usuarioEncontrado.Nome);
     document.getElementById("nome-usuario").innerHTML = usuarioEncontrado.Nome;
+
+    // resetar campos do login também
+    document.getElementById("emailLogin").value = "";
+    document.getElementById("senhaLogin").value = "";
   } else {
-    alert("Usuario ou senha não encontrado!");
+    alert("Usuário ou senha não encontrado!");
   }
 }
 
@@ -66,6 +92,7 @@ let btnLogin = document.getElementById("btn-login");
 btnLogin.addEventListener('click', function(e){
   e.preventDefault();
   login();
+  mostrarCarrossel();
 });
 
 
@@ -74,12 +101,13 @@ btnLogin.addEventListener('click', function(e){
 let btnSalvarReceita = document.getElementById("btn-salvarReceita");
 btnSalvarReceita.addEventListener('click', function(e){
   e.preventDefault();
-  cadastrarReceita();
-  alert("Receita Cadastrada com sucesso!");
-  mostrarCarrossel();
-  resetarInputsReceita()
+  if (cadastrarReceita()) {
+    alert("Receita cadastrada com sucesso!");
+    mostrarCarrossel();
+    resetarInputsReceita();
+    window.location.reload();
 
-});
+}});
 
 const containerIngredientes = document.querySelector(".adicionar-ingredientes");
 const btnAddIngrediente = document.getElementById("btn-add-ingrediente");
@@ -122,7 +150,7 @@ btnAddPasso.addEventListener("click", function(e){
   containerPassos.appendChild(novoPasso);
 });
 
-function cadastrarReceita(){
+function cadastrarReceita() {
   const tituloReceita = document.getElementById("tituloReceita").value.trim();
   const descricaoReceita = document.getElementById("descricao").value.trim();
   const tempoPreparo = document.getElementById("tempo").value.trim();
@@ -136,15 +164,37 @@ function cadastrarReceita(){
       Medida: inputs[1]?.value.trim() || "",
       Quantidade: inputs[2]?.value.trim() || ""
     };
-  }).filter(i => i.Ingrediente || i.Medida || i.Quantidade);
+  });
 
-  const passos = Array.from(document.querySelectorAll(".passoPreparo")).map(p => p.value.trim()).filter(p => p !== "");
+  const passos = Array.from(document.querySelectorAll(".passoPreparo")).map(p => p.value.trim());
+
+  // Verificação de campos obrigatórios
+  if (!tituloReceita) {
+    alert("O título é obrigatório!");
+    return false;
+  }
+  if (!descricaoReceita) {
+    alert("A descrição é obrigatória!");
+    return false;
+  }
+  if (!tempoPreparo) {
+    alert("O tempo de preparo é obrigatório!");
+    return false;
+  }
+  if (listaIngredientes.length === 0 || listaIngredientes.some(i => !i.Ingrediente || !i.Medida || !i.Quantidade)) {
+    alert("Todos os ingredientes devem ser preenchidos com nome, medida e quantidade!");
+    return false;
+  }
+  if (passos.length === 0 || passos.some(p => p === "")) {
+    alert("Todos os passos de preparo devem ser preenchidos!");
+    return false;
+  }
 
   const receita = {
     Titulo: tituloReceita,
     Descricao: descricaoReceita,
     TempoPreparo: tempoPreparo,
-    Imagem: `imagens/${image}`,
+    Imagem: image ? `imagens/${image}` : "",
     Ingredientes: listaIngredientes,
     Passos: passos
   };
@@ -153,9 +203,27 @@ function cadastrarReceita(){
   receitas.push(receita);
   localStorage.setItem("Receitas", JSON.stringify(receitas));
   console.log(localStorage.getItem("Receitas"));
+
+  return true; 
 }
 
+const inputFile = document.getElementById("add-image");
+const preview = document.getElementById("preview-img");
 
+inputFile.addEventListener("change", function(){
+  const file = this.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      preview.src = e.target.result;
+      preview.style.display = "block";
+    }
+    reader.readAsDataURL(file);
+  } else {
+    preview.src = "";
+    preview.style.display = "none";
+  }
+});
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<< Section Carrossel >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 function atualizarCarrossel() {
   const receitas = JSON.parse(localStorage.getItem("Receitas")) || [];
